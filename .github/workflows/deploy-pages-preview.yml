@@ -37,8 +37,8 @@ jobs:
         run: |
           cd docs
           
-          # Jekyll でビルド
-          bundle exec jekyll build --destination ../_site
+          # プレビュー用の設定でJekyllをビルド
+          bundle exec jekyll build --destination ../_site --baseurl "/sample-pages/pr-${{ github.event.number }}"
           
           cd ..
 
@@ -46,25 +46,21 @@ jobs:
         run: |
           # デバッグ: 現在のディレクトリと_siteの内容を確認
           echo "Current directory: $(pwd)"
-          echo "Contents of current directory:"
-          ls -la
           echo "Contents of _site directory:"
           ls -la _site/ || echo "_site directory does not exist"
           
-          # プレビュー用のサブディレクトリを作成
-          mkdir -p _site/pr-${{ github.event.number }}
+          # プレビュー用のサブディレクトリを作成して移動
+          mkdir -p _site_temp/pr-${{ github.event.number }}
+          mv _site/* _site_temp/pr-${{ github.event.number }}/
           
-          # メインサイトの内容をプレビューディレクトリにコピー（pr-*ディレクトリは除外）
-          for item in _site/*; do
-            if [ -f "$item" ]; then
-              cp "$item" "_site/pr-${{ github.event.number }}/"
-            elif [ -d "$item" ] && [[ ! "$(basename "$item")" =~ ^pr-[0-9]+$ ]]; then
-              cp -r "$item" "_site/pr-${{ github.event.number }}/"
-            fi
-          done
+          # メインサイトの内容を_siteに配置
+          mv _site_temp/* _site/
+          rmdir _site_temp
           
           # 結果を確認
-          echo "Created preview directory:"
+          echo "Created preview structure:"
+          ls -la _site/
+          echo "Preview directory contents:"
           ls -la _site/pr-${{ github.event.number }}/
 
       - name: Upload artifact
