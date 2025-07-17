@@ -44,11 +44,6 @@ jobs:
 
       - name: Create PR preview structure
         run: |
-          # デバッグ: 現在のディレクトリと_siteの内容を確認
-          echo "Current directory: $(pwd)"
-          echo "Contents of _site directory:"
-          ls -la _site/ || echo "_site directory does not exist"
-          
           # プレビュー用のサブディレクトリを作成して移動
           mkdir -p _site_temp/pr-${{ github.event.number }}
           mv _site/* _site_temp/pr-${{ github.event.number }}/
@@ -56,12 +51,6 @@ jobs:
           # メインサイトの内容を_siteに配置
           mv _site_temp/* _site/
           rmdir _site_temp
-          
-          # 結果を確認
-          echo "Created preview structure:"
-          ls -la _site/
-          echo "Preview directory contents:"
-          ls -la _site/pr-${{ github.event.number }}/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
