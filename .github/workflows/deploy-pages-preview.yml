@@ -27,10 +27,10 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Build main site with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./docs
-          destination: ./_site
+        run: |
+          gem install bundler jekyll
+          bundle install
+          jekyll build --source ./docs --destination ./_site
 
       - name: Create PR preview structure
         run: |
