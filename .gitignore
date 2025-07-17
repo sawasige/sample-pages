@@ -3,11 +3,6 @@ docs/_site/
 docs/.sass-cache/
 docs/.jekyll-cache/
 docs/.jekyll-metadata
-docs/Gemfile.lock
-
-# Ruby
-docs/.bundle/
-docs/vendor/
 
 # OS
 .DS_Store

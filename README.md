@@ -13,14 +13,13 @@
 sample-pages/
 ├── docs/                    # Jekyll サイトのソース
 │   ├── _config.yml         # Jekyll 設定
-│   ├── Gemfile            # Ruby 依存関係
 │   ├── index.md           # ホームページ
 │   ├── docs/              # ドキュメントページ
 │   └── api/               # API リファレンス
 ├── .github/workflows/      # GitHub Actions
-│   ├── deploy.yml         # 本番デプロイ
-│   ├── pr-preview.yml     # プレビューデプロイ
-│   └── cleanup-preview.yml # プレビュー削除
+│   ├── deploy-pages.yml         # 本番デプロイ
+│   ├── deploy-pages-preview.yml # プレビューデプロイ
+│   └── cleanup-pages-preview.yml # プレビュー削除
 └── README.md
 ```
 
@@ -42,17 +41,19 @@ sample-pages/
 
 ## 🛠️ ローカル開発
 
+GitHub Pages の公式 Jekyll ワークフローを使用しているため、Gemfile は不要です。
+
 ```bash
 # リポジトリをクローン
 git clone https://github.com/sawasige/sample-pages.git
 cd sample-pages
 
-# 依存関係をインストール
-cd docs
-bundle install
+# Jekyll をインストール（初回のみ）
+gem install jekyll bundler
 
 # 開発サーバーを起動
-bundle exec jekyll serve
+cd docs
+jekyll serve
 ```
 
 サイトは `http://localhost:4000` で確認できます。

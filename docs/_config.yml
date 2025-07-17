@@ -2,11 +2,10 @@ title: "Sample Pages"
 description: "A minimal sample site using just-the-docs"
 
 # Theme configuration
-theme: just-the-docs
 remote_theme: just-the-docs/just-the-docs@v0.8.2
 
 # Site configuration
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/sample-pages" # the subpath of your site, e.g. /blog
 url: "https://sawasige.github.io" # the base hostname & protocol for your site
 
 # Enable or disable the site search
@@ -35,32 +34,5 @@ permalink: pretty
 # Exclude from processing
 exclude:
   - README.md
-  - Gemfile
-  - Gemfile.lock
   - node_modules
   - vendor
-  - .asset-cache
-  - .bundle
-  - .jekyll-assets-cache
-  - .sass-cache
-  - assets/js/plugins
-  - assets/js/_main.js
-  - assets/js/vendor
-  - Capfile
-  - CHANGELOG
-  - config
-  - Gruntfile.js
-  - gulpfile.js
-  - LICENSE
-  - log
-  - package.json
-  - package-lock.json
-  - Rakefile
-  - tmp
-  - /docs/tests/
-
-# Enable plugins
-plugins:
-  - jekyll-feed
-  - jekyll-sitemap
-  - jekyll-seo-tag

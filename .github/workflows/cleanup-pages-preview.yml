@@ -16,31 +16,26 @@ jobs:
   cleanup-preview:
     runs-on: ubuntu-latest
     steps:
-      - name: Delete PR Preview Deployment
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { data: deployments } = await github.rest.repos.listDeployments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              environment: 'github-pages-preview'
-            });
-            
-            const prDeployment = deployments.find(deployment => 
-              deployment.description && deployment.description.includes(`PR #${{ github.event.number }}`)
-            );
-            
-            if (prDeployment) {
-              await github.rest.repos.createDeploymentStatus({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                deployment_id: prDeployment.id,
-                state: 'inactive',
-                description: 'PR closed, preview deleted'
-              });
-            }
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Update PR Comment
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Build main site with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./docs
+          destination: ./_site
+
+      - name: Upload artifact (main site only)
+        uses: actions/upload-pages-artifact@v3
+
+      - name: Deploy main site (cleanup preview)
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Update PR comment
         uses: actions/github-script@v7
         with:
           script: |
@@ -51,7 +46,7 @@ jobs:
             });
             
             const botComment = comments.find(comment => 
-              comment.user.type === 'Bot' && comment.body.includes('プレビューサイト')
+              comment.user.type === 'Bot' && comment.body.includes('📖 プレビューサイト')
             );
             
             if (botComment) {
