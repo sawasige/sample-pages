@@ -44,7 +44,8 @@ jobs:
           mkdir -p preview_site/pr-${{ github.event.number }}
           cp -r _site/* preview_site/pr-${{ github.event.number }}/
           
-          # 元の_siteを置き換え
+          # 元の_siteの権限を変更してから削除
+          chmod -R +w _site
           rm -rf _site
           mv preview_site _site
 
