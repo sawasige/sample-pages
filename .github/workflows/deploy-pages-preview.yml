@@ -28,25 +28,27 @@ jobs:
 
       - name: Build main site with Jekyll
         run: |
-          gem install bundler jekyll
+          cd docs
+          
+          # 依存関係をインストール
           bundle install
-          jekyll build --source ./docs --destination ./_site
+          
+          # Jekyll でビルド
+          bundle exec jekyll build --destination ../_site
+          
+          cd ..
 
       - name: Create PR preview structure
         run: |
-          # プレビュー用のサブディレクトリを既存の_site内に直接作成
+          # プレビュー用のサブディレクトリを作成
           mkdir -p _site/pr-${{ github.event.number }}
           
           # メインサイトの内容をプレビューディレクトリにコピー
-          # 既存のファイルを避けるため、まず一時的にバックアップ
-          find _site -maxdepth 1 -type f -exec cp {} _site/pr-${{ github.event.number }}/ \;
+          cp -r _site/* _site/pr-${{ github.event.number }}/
           
-          # サブディレクトリも含めてコピー（pr-* 以外）
-          for dir in _site/*/; do
-            if [[ ! "$dir" =~ pr-[0-9]+ ]]; then
-              cp -r "$dir" "_site/pr-${{ github.event.number }}/"
-            fi
-          done
+          # 結果を確認
+          echo "Created preview directory:"
+          ls -la _site/pr-${{ github.event.number }}/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
