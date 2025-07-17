@@ -54,8 +54,14 @@ jobs:
           # プレビュー用のサブディレクトリを作成
           mkdir -p _site/pr-${{ github.event.number }}
           
-          # メインサイトの内容をプレビューディレクトリにコピー
-          cp -r _site/* _site/pr-${{ github.event.number }}/
+          # メインサイトの内容をプレビューディレクトリにコピー（pr-*ディレクトリは除外）
+          for item in _site/*; do
+            if [ -f "$item" ]; then
+              cp "$item" "_site/pr-${{ github.event.number }}/"
+            elif [ -d "$item" ] && [[ ! "$(basename "$item")" =~ ^pr-[0-9]+$ ]]; then
+              cp -r "$item" "_site/pr-${{ github.event.number }}/"
+            fi
+          done
           
           # 結果を確認
           echo "Created preview directory:"
