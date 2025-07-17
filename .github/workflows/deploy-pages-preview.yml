@@ -30,6 +30,9 @@ jobs:
         run: |
           cd docs
           
+          # Bundlerをインストール
+          gem install bundler
+          
           # 依存関係をインストール
           bundle install
           
