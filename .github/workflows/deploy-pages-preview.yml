@@ -34,20 +34,19 @@ jobs:
 
       - name: Create PR preview structure
         run: |
-          # 新しいディレクトリを作成
-          mkdir -p preview_site
+          # プレビュー用のサブディレクトリを既存の_site内に直接作成
+          mkdir -p _site/pr-${{ github.event.number }}
           
-          # メインサイトをコピー
-          cp -r _site/* preview_site/
+          # メインサイトの内容をプレビューディレクトリにコピー
+          # 既存のファイルを避けるため、まず一時的にバックアップ
+          find _site -maxdepth 1 -type f -exec cp {} _site/pr-${{ github.event.number }}/ \;
           
-          # プレビュー用のサブディレクトリを作成
-          mkdir -p preview_site/pr-${{ github.event.number }}
-          cp -r _site/* preview_site/pr-${{ github.event.number }}/
-          
-          # 元の_siteの権限を変更してから削除
-          chmod -R +w _site
-          rm -rf _site
-          mv preview_site _site
+          # サブディレクトリも含めてコピー（pr-* 以外）
+          for dir in _site/*/; do
+            if [[ ! "$dir" =~ pr-[0-9]+ ]]; then
+              cp -r "$dir" "_site/pr-${{ github.event.number }}/"
+            fi
+          done
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
