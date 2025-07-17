@@ -34,8 +34,15 @@ jobs:
 
       - name: Create PR preview directory structure
         run: |
+          # _siteディレクトリの権限を変更
+          chmod -R 755 _site || true
+          
           # 現在のサイトを一時的に保存
           cp -r _site temp_site
+          
+          # _siteディレクトリを再作成
+          rm -rf _site
+          mkdir -p _site
           
           # プレビュー用のディレクトリ構造を作成
           mkdir -p _site/pr-${{ github.event.number }}
