@@ -32,29 +32,21 @@ jobs:
           source: ./docs
           destination: ./_site
 
-      - name: Create PR preview directory structure
+      - name: Create PR preview structure
         run: |
-          # _siteディレクトリの権限を変更
-          chmod -R 755 _site || true
+          # 新しいディレクトリを作成
+          mkdir -p preview_site
           
-          # 現在のサイトを一時的に保存
-          cp -r _site temp_site
+          # メインサイトをコピー
+          cp -r _site/* preview_site/
           
-          # _siteディレクトリを再作成
+          # プレビュー用のサブディレクトリを作成
+          mkdir -p preview_site/pr-${{ github.event.number }}
+          cp -r _site/* preview_site/pr-${{ github.event.number }}/
+          
+          # 元の_siteを置き換え
           rm -rf _site
-          mkdir -p _site
-          
-          # プレビュー用のディレクトリ構造を作成
-          mkdir -p _site/pr-${{ github.event.number }}
-          
-          # プレビューサイトをサブディレクトリに配置
-          cp -r temp_site/* _site/pr-${{ github.event.number }}/
-          
-          # メインサイトも保持（既存の本番サイトを維持）
-          cp -r temp_site/* _site/
-          
-          # 一時ディレクトリを削除
-          rm -rf temp_site
+          mv preview_site _site
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
