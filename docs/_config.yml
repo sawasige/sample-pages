@@ -1,0 +1,66 @@
+title: "Sample Pages"
+description: "A minimal sample site using just-the-docs"
+
+# Theme configuration
+theme: just-the-docs
+remote_theme: just-the-docs/just-the-docs@v0.8.2
+
+# Site configuration
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://sawasige.github.io" # the base hostname & protocol for your site
+
+# Enable or disable the site search
+search_enabled: true
+
+# Aux links for the upper right navigation
+aux_links:
+  "GitHub Repository":
+    - "https://github.com/sawasige/sample-pages"
+
+# Makes Aux links open in a new tab. Default is false
+aux_links_new_tab: true
+
+# Back to top link
+back_to_top: true
+back_to_top_text: "Back to top"
+
+# Footer content
+footer_content: "Copyright &copy; 2025 Sample Pages. Distributed by an <a href=\"https://github.com/just-the-docs/just-the-docs/tree/main/LICENSE.txt\">MIT license.</a>"
+
+# Jekyll configuration
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Exclude from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .asset-cache
+  - .bundle
+  - .jekyll-assets-cache
+  - .sass-cache
+  - assets/js/plugins
+  - assets/js/_main.js
+  - assets/js/vendor
+  - Capfile
+  - CHANGELOG
+  - config
+  - Gruntfile.js
+  - gulpfile.js
+  - LICENSE
+  - log
+  - package.json
+  - package-lock.json
+  - Rakefile
+  - tmp
+  - /docs/tests/
+
+# Enable plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
