@@ -35,6 +35,15 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
+      - name: Remove PR preview directory
+        run: |
+          if [ -d "_site/pr-${{ github.event.number }}" ]; then
+            rm -rf "_site/pr-${{ github.event.number }}"
+            echo "Preview directory _site/pr-${{ github.event.number }} removed."
+          else
+            echo "Preview directory _site/pr-${{ github.event.number }} does not exist."
+          fi
+
       - name: Update PR comment
         uses: actions/github-script@v7
         with:
