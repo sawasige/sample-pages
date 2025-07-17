@@ -23,18 +23,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          working-directory: docs
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Build main site with Jekyll
         run: |
           cd docs
-          
-          # Bundlerをインストール
-          gem install bundler
-          
-          # 依存関係をインストール
-          bundle install
           
           # Jekyll でビルド
           bundle exec jekyll build --destination ../_site
@@ -43,6 +44,13 @@ jobs:
 
       - name: Create PR preview structure
         run: |
+          # デバッグ: 現在のディレクトリと_siteの内容を確認
+          echo "Current directory: $(pwd)"
+          echo "Contents of current directory:"
+          ls -la
+          echo "Contents of _site directory:"
+          ls -la _site/ || echo "_site directory does not exist"
+          
           # プレビュー用のサブディレクトリを作成
           mkdir -p _site/pr-${{ github.event.number }}
           
